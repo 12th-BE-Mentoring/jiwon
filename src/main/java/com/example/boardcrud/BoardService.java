@@ -3,6 +3,8 @@ package com.example.boardcrud;
 import com.example.boardcrud.dto.BoardCreateRequest;
 import com.example.boardcrud.dto.BoardResponse;
 import com.example.boardcrud.dto.BoardUpdateRequest;
+import com.example.boardcrud.global.error.CustomException;
+import com.example.boardcrud.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +31,9 @@ public class BoardService {
 
     // 게시글 조회 기능
     public BoardResponse getBoard(Integer id) {
-        // id 맞는 게시글을 조회하고 없으면 RuntimeException
-        Board board = boardRepository.findById(id).orElseThrow(RuntimeException::new);
+        // id 맞는 게시글을 조회하고 없으면 Error
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
         // 조회한 게시글 정보를 BoardResponse DTO로 반환
         return new BoardResponse(board.getWriter(), board.getTitle(), board.getContent());
     }
@@ -39,7 +42,7 @@ public class BoardService {
     @Transactional
     public void updateBoard(Integer id, BoardUpdateRequest request) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
         board.updateBoard(request.getTitle(), request.getContent());
         boardRepository.save(board);
     }
@@ -47,7 +50,7 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Integer id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
         boardRepository.delete(board);
     }
 

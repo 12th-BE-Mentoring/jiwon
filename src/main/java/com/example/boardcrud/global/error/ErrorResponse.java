@@ -5,6 +5,6 @@ public record ErrorResponse (
     int status
 ) {
     public static ErrorResponse of(ErrorCode errorCode) {
-        return new ErrorResponse(errorCode.getMessage(), errorCode.getStatus().value());
+        return new ErrorResponse(errorCode.getMessage(), errorCode.getStatus().value()); //.value(): HttpStatus의 메서드. 상태 코드를 숫자로 반환
     }
 }

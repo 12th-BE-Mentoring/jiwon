@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomException.class)
+    @ExceptionHandler(CustomException.class) //CustomException이 발생하면 여기서
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
 
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class) //CustomException에서 만들지 못한 오류는 여기서
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("Undefined Exception ", e);
 
