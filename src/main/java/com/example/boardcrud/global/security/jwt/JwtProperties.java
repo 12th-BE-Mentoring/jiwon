@@ -1,13 +1,11 @@
 package com.example.boardcrud.global.security.jwt;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
+@RequiredArgsConstructor
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
     private final String secretKey;
-
-    public JwtProperties(String secretKey) {
-        this.secretKey = secretKey;
-    }
 }

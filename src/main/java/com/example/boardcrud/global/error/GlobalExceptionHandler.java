@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice //Controller에서 예외 발생 시 여기서 처리함
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class) //CustomException이 발생하면 여기서
