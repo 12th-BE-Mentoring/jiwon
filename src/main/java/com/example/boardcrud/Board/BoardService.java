@@ -1,4 +1,4 @@
-package com.example.boardcrud;
+package com.example.boardcrud.Board;
 
 import com.example.boardcrud.dto.BoardCreateRequest;
 import com.example.boardcrud.dto.BoardResponse;
@@ -22,8 +22,11 @@ public class BoardService {
 
     // 게시글 생성 기능
     public void createBoard(BoardCreateRequest request) {
-        // 요청 받은 데이터를 get으로 들고와서 board 객체 생성
-        Board board = new Board(request.getTitle(), request.getContent(), request.getWriter());
+        Board board = new Board(
+                request.getTitle(),
+                request.getWriter(),
+                request.getContent()
+        );
 
         // DB에 저장
         boardRepository.save(board);

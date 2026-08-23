@@ -1,6 +1,5 @@
-package com.example.boardcrud;
+package com.example.boardcrud.Board;
 import jakarta.persistence.*;
-import lombok.*;
 
 // 스프링 컨테이너에게 Entity임을 나타낸다
 @Entity

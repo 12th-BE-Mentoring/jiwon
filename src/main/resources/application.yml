@@ -21,3 +21,6 @@ spring:
     property-naming-strategy: SNAKE_CASE
     serialization:
       fail-on-empty-beans: false
+
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}

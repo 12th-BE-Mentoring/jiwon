@@ -1,4 +1,4 @@
-package com.example.boardcrud;
+package com.example.boardcrud.Board;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

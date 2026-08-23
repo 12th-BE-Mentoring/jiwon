@@ -1,4 +1,4 @@
-package com.example.boardcrud;
+package com.example.boardcrud.Board;
 
 import com.example.boardcrud.dto.BoardCreateRequest;
 import com.example.boardcrud.dto.BoardResponse;
