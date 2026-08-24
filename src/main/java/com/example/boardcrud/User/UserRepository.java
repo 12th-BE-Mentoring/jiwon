@@ -11,5 +11,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
 
     // 회원가입 할 때 이미 존재하는지 확인 username
-    boolean existByUsername(String username);
+    boolean existsByUsername(String username);
 }

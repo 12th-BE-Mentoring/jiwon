@@ -11,7 +11,11 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User Not Found"),
 
-    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Board Not Found");
+    DUPLICATE_USERNAME(HttpStatus.CONFLICT, "Username Already Exists"),
+
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Board Not Found"),
+
+    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "Invalid User");
 
     private final HttpStatus status;
     private final String message;

@@ -3,10 +3,13 @@ package com.example.boardcrud.global.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Component
 public class JwtTokenProvider {
@@ -21,7 +24,7 @@ public class JwtTokenProvider {
     public JwtTokenProvider(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));}
-//jwt 만들 때 마다 키 설ㄹ정하기 번거로우니까 저렇게 생성자 만듦
+//jwt 만들 때 마다 키 설정하기 번거로우니까 저렇게 생성자 만듦
 
     public String generateAccessToken(String Id) {
         long accessTokenValidity = 1000L * 60 * 60; //1h
@@ -46,21 +49,46 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    // 값 가져오기
+    // Authorization Bearer lakdsjl... 여기서 뒤에 JWT만 뽑아냄
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.replace("Bearer ", "");
+        }
+        return null;
+    }
+
+    // 토큰 유효성 검사
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+
+    public Authentication getAuthentication(String token) {
+
+        Claims claims = getClaims(token);
+
+        String username = claims.getSubject();
+
+        return new UsernamePasswordAuthenticationToken(
+                username,
+                null,
+                null
+        );
+    }
+
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            getClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
 }
