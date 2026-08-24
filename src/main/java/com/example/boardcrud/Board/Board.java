@@ -1,8 +1,12 @@
 package com.example.boardcrud.Board;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // 스프링 컨테이너에게 Entity임을 나타낸다
 @Entity
+@Getter
+@NoArgsConstructor
 public class Board {
 
     // PK 지정
@@ -27,23 +31,4 @@ public class Board {
         this.content = content;
     }
 
-    public Board(){
-    }
-
-    // private 필드를 클래스 외부에서 접근할 수 있게 하는 코드
-    public Integer getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getContent() {
-        return content;
-    }
 }
