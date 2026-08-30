@@ -1,5 +1,6 @@
 package com.example.boardcrud.global.security.jwt;
 
+import com.example.boardcrud.global.error.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,15 +28,28 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = jwtProvider.resolveToken(request);
 
-        if (token != null) {
+        try {
+            if (token != null) {
 
-            Authentication authentication =
-                    jwtProvider.getAuthentication(token);
+                Authentication authentication =
+                        jwtProvider.getAuthentication(token);
 
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (CustomException e) {
+            response.setStatus(e.getErrorCode().getStatus().value());
+            response.setContentType("application/json;charset=UTF-8");
+
+            String body = String.format(
+                    "{\"code\":\"%s\",\"message\":\"%s\"}",
+                    e.getErrorCode().name(),
+                    e.getErrorCode().getMessage()
+            );
+
+            response.getWriter().write(body);
         }
-
-        filterChain.doFilter(request, response);
     }
 }
