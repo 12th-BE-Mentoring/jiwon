@@ -2,6 +2,7 @@ package com.example.boardcrud.User;
 
 import com.example.boardcrud.Board.Board;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     private String username;
 
+    @NotBlank
     private String password;
 
     public User(String username, String password) {

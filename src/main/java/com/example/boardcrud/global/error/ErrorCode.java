@@ -15,7 +15,11 @@ public enum ErrorCode {
 
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Board Not Found"),
 
-    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "Invalid User");
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid Token"),
+
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "Expired Token"),
+
+    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "Invalid Login");
 
     private final HttpStatus status;
     private final String message;

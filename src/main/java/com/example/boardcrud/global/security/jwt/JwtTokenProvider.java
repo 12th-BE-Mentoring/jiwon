@@ -1,6 +1,10 @@
 package com.example.boardcrud.global.security.jwt;
 
+import com.example.boardcrud.global.error.CustomException;
+import com.example.boardcrud.global.error.ErrorCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,21 +63,8 @@ public class JwtTokenProvider {
         return null;
     }
 
-    // 토큰 유효성 검사
-    public boolean validateToken(String token) {
-        try {
-            getClaims(token);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
-    }
-
-
     public Authentication getAuthentication(String token) {
-
         Claims claims = getClaims(token);
-
         String username = claims.getSubject();
 
         return new UsernamePasswordAuthenticationToken(
@@ -83,12 +74,21 @@ public class JwtTokenProvider {
         );
     }
 
+    // Token 정보 들고오기
     private Claims getClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
+
+        } catch (JwtException e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
     }
 
 }
